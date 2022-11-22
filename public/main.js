@@ -1,0 +1,1 @@
+var socket = io.connect('http:://10.1.19.2:6677',{'forceNew': true});
