@@ -2,21 +2,27 @@ import express from "express";
 import {Server as WebSocketServer} from 'socket.io';
 import http from 'http';
 import { Socket } from "dgram";
+import { dirname } from "path";
 
 const app = express();
 const server = http.createServer(app);
 const io = new WebSocketServer(server);
 
-app.use(express.static('public'))
-
+app.use(express.static('public'));
 app.get('/hola-mundo', (req, res)=>{
-   res.status(200).send("Hola");
+    res.send('hola')
 });
 
-io.on('connection', ()=>{
-console.log("El cliente con la IP " + Socket.handshake.adress + " se ha conectado")
+var messages = [{
+    id: 1,
+    text: 'Bienvenido al chat',
+    nickname: 'bot-juanq'
+}];
+
+io.on('connection', (socket)=>{
+   console.log("El cliente con IP " + socket.handshake.address + " se ha conectado");
+   socket.emit('messages',messages);
 });
 
-server.listen(6677, ()=>{
-  console.log("Sever on port", 6777)
-});
+server.listen(3000);
+console.log("Server on port:", 3000);
