@@ -22,6 +22,10 @@ var messages = [{
 io.on('connection', (socket)=>{
    console.log("El cliente con IP " + socket.handshake.address + " se ha conectado");
    socket.emit('messages',messages);
+   socket.on('add-message',(data)=>{
+    messages.push(data);
+    io.sockets.emit('messages', messages)
+   });
 });
 
 server.listen(3000);
